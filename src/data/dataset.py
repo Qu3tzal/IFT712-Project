@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
 import numpy as np
+import sklearn.utils
 
 
 class Dataset:
@@ -74,6 +75,30 @@ class Dataset:
             self.targets = np.asarray(self.targets)
         else:
             random.shuffle(self.inputs)
+
+    def bootstrap(self, m):
+        """ Creates m new datasets from the current dataset.
+
+            Creates m new datasets by bootstrapping the current dataset.
+
+            Arg:
+                m the number of datasets to generate
+        """
+        new_datasets = []
+
+        for i in range(m):
+            # Resample.
+            resampled_data = None
+
+            if not self.targets is None:
+                resampled_data = sklearn.utils.resample(self.inputs, self.targets)
+            else:
+                resampled_data = sklearn.utils.resample(self.inputs)
+
+            # Push the new dataset.
+            new_datasets.append(Dataset(*resampled_data))
+
+        return new_datasets
 
     def __getitem__(self, key):
         """ Returns the key-th element of the dataset.
