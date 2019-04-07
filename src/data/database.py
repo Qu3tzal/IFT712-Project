@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import dataset
 import pandas as pd
 
 
@@ -17,16 +16,16 @@ class Database:
 
     def load(self):
         """ Loads the content of the database in memory. """
-        train_dataframe = pd.read_csv(os.path.join(path, 'raw/train.csv'))
-        test_dataframe = pd.read_csv(os.path.join(path, 'raw/test.csv'))
+        train_dataframe = pd.read_csv(os.path.join(self.directory, 'raw/train.csv'))
+        test_dataframe = pd.read_csv(os.path.join(self.directory, 'raw/test.csv'))
 
-        self.train_dataset = Dataset(test_dataframe.drop('species', axis=1), test_dataframe['species'])
-        self.test_dataset = Dataset(test_dataframe.values)
+        self.train_dataset = train_dataframe
+        self.test_dataset = test_dataframe
 
-    def get_train_dataset():
+    def get_train_dataset(self):
         """ Returns the training dataset. """
         return self.train_dataset
 
-    def get_test_dataset():
+    def get_test_dataset(self):
         """ Returns the test dataset. """
         return self.test_dataset
