@@ -2,6 +2,7 @@
 import data.bootstrap, data.database
 import features.preparator as preparator
 import models.svm_classifier
+import models.knn_classifier
 
 def main():
     """ Main function.
@@ -32,13 +33,13 @@ def main():
     test_targets = test_dataset['species']
 
     # Create the classifier.
-    svm = models.svm_classifier.SVMClassifier()
+    knn = models.knn_classifier.KNNClassifier()
 
     # Train.
-    svm.train(training_inputs, training_targets)
+    knn.train(training_inputs, training_targets)
 
     # Output the score.
-    print(svm.score(test_inputs, test_targets))
+    print(knn.score(training_inputs, training_targets))
 
 if __name__ == "__main__":
     main()
