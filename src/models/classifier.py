@@ -13,7 +13,7 @@ class Classifier:
             Arg:
                 name the name of the classifier
         """
-        self.parameters = dict({"name", name})
+        self.parameters = dict({"name": name})
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
