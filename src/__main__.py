@@ -1,29 +1,44 @@
 # -*- coding: utf-8 -*-
 import data.bootstrap, data.database
 import features.preparator as preparator
+import models.svm_classifier
 
 def main():
-    """Main function.
+    """ Main function.
     """
     # Load the database.
     db = data.database.Database('data')
     db.load()
 
     # Get the datasets.
-    train_ds = db.get_train_dataset()
-    test_ds = db.get_test_dataset()
+    dataset = db.get_train_dataset().drop('id', axis=1)
 
     # Prepare the datasets.
     standardizer = preparator.StandardizerPreparator()
-    standardizer.prepare(train_ds, train_ds.columns[2:]) # We don't apply preparation on the ID and Species (=target) columns.
-    standardizer.prepare(test_ds, test_ds.columns[1:]) # We don't apply preparation on the ID column.
+    standardizer.prepare(dataset, dataset.columns[1:]) # We don't apply preparation on the Species (=target) columns.
 
-    # Test the bootstrap.
-    bootstraps = data.bootstrap.bootstrap_dataset(train_ds, 5)
+    name2int = preparator.Name2IntPreparator()
+    name2int.prepare(dataset, ['species']) # Replace the species name by an integer.
+
+    # Split the dataset in 70%/30%.
+    training_dataset = dataset[:int(dataset.shape[0] * 0.7)]
+    test_dataset = dataset[int(dataset.shape[0] * 0.7):]
+
+    # Separate the inputs from the targets.
+    training_inputs = training_dataset.drop('species', axis=1)
+    training_targets = training_dataset['species']
+
+    test_inputs = test_dataset.drop('species', axis=1)
+    test_targets = test_dataset['species']
+
+    # Create the classifier.
+    svm = models.svm_classifier.SVMClassifier()
 
     # Train.
+    svm.train(training_inputs, training_targets)
 
     # Output the score.
+    print(svm.score(test_inputs, test_targets))
 
 if __name__ == "__main__":
     main()
