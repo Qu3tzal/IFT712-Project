@@ -17,15 +17,15 @@ class MLPerceptronClassifier(models.classifier.Classifier):
         super().__init__("MLPerceptronClassifier")
         self.mlp = GridSearchCV(
                         MLPClassifier(
-                            solver='sgd',
-                            momentum=0.9,
-                            activation='tanh',
+                            solver='adam',
+                            activation='relu',
                             hidden_layer_sizes=(99,), # We have 99 classes.
                             learning_rate='adaptive', # Makes the learning rate smaller when the loss cease to decrease.
-                            max_iter=5000 # Make sure we have enough time to converge.
+                            max_iter=1000 # Make sure we have enough time to converge.
                         ),
                         {"alpha": 10.0 ** -np.arange(1, 7)},
-                        cv=10
+                        cv=3,
+                        iid=False
                     )
 
 
