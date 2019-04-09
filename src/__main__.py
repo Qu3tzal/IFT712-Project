@@ -4,7 +4,11 @@ import data.bootstrap, data.database
 import features.preparator as preparator
 import models.classifier
 import models.svm_classifier
+import models.knn_classifier
 import models.logistic_regression_classifier
+import models.mlperceptron_classifier
+import models.random_forest_classifier
+
 
 def main():
 
@@ -15,7 +19,6 @@ def main():
         usage = "\n----------------\n" \
                 "\nUsage: python src training_method\
                 \n\ttraining_method: SVM, KNN, logistic_regression, random_forest, multi_layer_neural_network" \
-                "\n\nNOTE: Only SVM can be chosen so far" \
                 "\n\n----------------\n\n"
         print(usage)
         return
@@ -59,13 +62,13 @@ def main():
     if training_method == 'SVM':
         classifier = models.svm_classifier.SVMClassifier()
     elif training_method == 'KNN':
-        raise NotImplementedError()
+        classifier = models.knn_classifier.KNNClassifier()
     elif training_method == 'logistic_regression':
-        raise NotImplementedError()
+        classifier = models.logistic_regression_classifier.LogisticRegressionClassifier()
     elif training_method == 'random_forest':
-        raise NotImplementedError()
+        classifier = models.random_forest_classifier.RandomForestClassifier()
     elif training_method == 'multi_layer_neural_network':
-        raise NotImplementedError()
+        classifier = models.mlperceptron_classifier.MLPerceptronClassifier()
     else:
         raise RuntimeError("Invalid training method name.")
 
