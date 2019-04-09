@@ -15,9 +15,6 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("logistic_regression")
-        print("logistic regression classifier")
-        # param as tests
-        # TODO iteration problem while initializing logistic regression classifier
         self.logistic_regression = LogisticRegression(random_state=0, solver='lbfgs',multi_class='multinomial',max_iter=1000)
 
     def train(self, inputs, targets):
@@ -27,7 +24,6 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
                 inputs the inputs
                 targets the targets
         """
-        print("logistic regression training...")
         self.logistic_regression.fit(inputs, targets)
 
     def predict(self, dataset):
@@ -49,7 +45,6 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        print("logistic regression scoring...")
         return self.logistic_regression.score(inputs, targets)
 
 
