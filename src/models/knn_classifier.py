@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import models.classifier
 from sklearn.neighbors import KNeighborsClassifier as knn
+from sklearn.model_selection import GridSearchCV
 
 class KNNClassifier(models.classifier.Classifier):
     """ This class is the abstract version of a classifier.
@@ -15,7 +16,8 @@ class KNNClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("KNN")
-        self.knn = knn(n_neighbors=3)
+        grid_parameters = {'n_neighbors': range(2, 15)}         # warning with iid default value as it will be deprecated
+        self.knn = GridSearchCV(knn(), grid_parameters, cv=3)   # least populated class in y has only 3 members, so cv is set to 3
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
@@ -46,3 +48,13 @@ class KNNClassifier(models.classifier.Classifier):
             Returns: the accuracy
         """
         return self.knn.score(inputs, targets)
+
+    def bestparams(self):
+        """ Computes the accuracy on the given dataset.
+
+            Arg:
+                None
+
+            Returns: parameters chosen by the GridSearchCV cross validation
+        """
+        return self.knn.best_params_
