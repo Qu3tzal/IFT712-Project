@@ -16,8 +16,8 @@ class KNNClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("KNN")
-        grid_parameters = {'n_neighbors': range(2, 15)}         # warning with iid default value as it will be deprecated
-        self.knn = GridSearchCV(knn(), grid_parameters, cv=3)   # least populated class in y has only 3 members, so cv is set to 3
+        grid_parameters = {'n_neighbors': range(2, 15)}
+        self.knn = GridSearchCV(knn(), grid_parameters, cv=3, iid=False)   # least populated class in y has only 3 members, so cv is set to 3
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
