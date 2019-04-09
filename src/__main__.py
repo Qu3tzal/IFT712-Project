@@ -2,7 +2,7 @@
 import data.bootstrap, data.database
 import features.preparator as preparator
 import models.svm_classifier
-import models.knn_classifier
+import models.logistic_regression_classifier
 
 def main():
     """ Main function.
@@ -15,6 +15,12 @@ def main():
     dataset = db.get_train_dataset().drop('id', axis=1)
 
     # Prepare the datasets.
+    shuffler = preparator.ShufflePreparator()
+    shuffler.prepare(dataset, dataset.columns[1:])
+
+    pca = preparator.PCAPreparator()
+    pca.prepare(dataset, dataset.columns[1:])
+
     standardizer = preparator.StandardizerPreparator()
     standardizer.prepare(dataset, dataset.columns[1:]) # We don't apply preparation on the Species (=target) columns.
 
@@ -33,13 +39,13 @@ def main():
     test_targets = test_dataset['species']
 
     # Create the classifier.
-    knn = models.knn_classifier.KNNClassifier()
+    logistic_classifier = models.logistic_regression_classifier.LogisticRegressionClassifier()
 
     # Train.
-    knn.train(training_inputs, training_targets)
+    logistic_classifier.train(training_inputs, training_targets)
 
     # Output the score.
-    print(knn.score(training_inputs, training_targets))
+    print(logistic_classifier.score(training_inputs, training_targets))
 
 if __name__ == "__main__":
     main()
