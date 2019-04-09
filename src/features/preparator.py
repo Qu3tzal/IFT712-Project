@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pandas as pd
-
+import sklearn.decomposition
+import sklearn.utils
 
 class Preparator:
     """ This class prepares a Pandas's DataFrame to be used. """
@@ -71,3 +72,34 @@ class Name2IntPreparator(Preparator):
 
             # Force conversion to int.
             dataset[column_name] = dataset[column_name].astype(int)
+
+class PCAPreparator(Preparator):
+    """ A preparator that performs a PCA.
+
+        Keeps the same number of columns and does not rename the columns.
+        The name of the columns after the preparation therefore lose their meaning.
+    """
+
+    def prepare(self, dataset, columns):
+        """ Prepares the dataset.
+
+            Arg:
+                dataset the dataset to prepare
+                columns a list of the name of the columns to prepare
+        """
+        values = dataset[columns]
+
+        PCA = sklearn.decomposition.PCA(n_components=len(columns)) # We keep all the columns.
+        PCA.fit_transform(values)
+
+class ShufflePreparator(Preparator):
+    """ A preparator that shuffles the dataset. """
+
+    def prepare(self, dataset, columns):
+        """ Prepares the dataset.
+
+            Arg:
+                dataset the dataset to prepare
+                columns a list of the name of the columns to prepare
+        """
+        sklearn.utils.shuffle(dataset[columns])

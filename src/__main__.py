@@ -4,6 +4,7 @@ import data.bootstrap, data.database
 import features.preparator as preparator
 import models.classifier
 import models.svm_classifier
+import models.logistic_regression_classifier
 
 def main():
 
@@ -30,6 +31,12 @@ def main():
     dataset = db.get_train_dataset().drop('id', axis=1)
 
     # Prepare the datasets.
+    shuffler = preparator.ShufflePreparator()
+    shuffler.prepare(dataset, dataset.columns[1:])
+
+    pca = preparator.PCAPreparator()
+    pca.prepare(dataset, dataset.columns[1:])
+
     standardizer = preparator.StandardizerPreparator()
     standardizer.prepare(dataset, dataset.columns[1:]) # We don't apply preparation on the Species (=target) columns.
 
