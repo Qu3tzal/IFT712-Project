@@ -1,12 +1,28 @@
 # -*- coding: utf-8 -*-
+import sys
 import data.bootstrap, data.database
 import features.preparator as preparator
+import models.classifier
 import models.svm_classifier
 import models.logistic_regression_classifier
 
 def main():
+
     """ Main function.
     """
+
+    if len(sys.argv) < 2:
+        usage = "\n----------------\n" \
+                "\nUsage: python src training_method\
+                \n\ttraining_method: SVM, KNN, logistic_regression, random_forest, multi_layer_neural_network" \
+                "\n\nNOTE: Only SVM can be chosen so far" \
+                "\n\n----------------\n\n"
+        print(usage)
+        return
+
+    training_method = sys.argv[1]
+    print("Training method: " + training_method)
+
     # Load the database.
     db = data.database.Database('data')
     db.load()
@@ -39,13 +55,25 @@ def main():
     test_targets = test_dataset['species']
 
     # Create the classifier.
-    logistic_classifier = models.logistic_regression_classifier.LogisticRegressionClassifier()
+    classifier = None
+    if training_method == 'SVM':
+        classifier = models.svm_classifier.SVMClassifier()
+    elif training_method == 'KNN':
+        raise NotImplementedError()
+    elif training_method == 'logistic_regression':
+        raise NotImplementedError()
+    elif training_method == 'random_forest':
+        raise NotImplementedError()
+    elif training_method == 'multi_layer_neural_network':
+        raise NotImplementedError()
+    else:
+        raise RuntimeError("Invalid training method name.")
 
     # Train.
-    logistic_classifier.train(training_inputs, training_targets)
+    classifier.train(training_inputs, training_targets)
 
     # Output the score.
-    print(logistic_classifier.score(training_inputs, training_targets))
+    print(classifier.score(test_inputs, test_targets))
 
 if __name__ == "__main__":
     main()
