@@ -19,6 +19,10 @@ class KNNClassifier(models.classifier.Classifier):
         grid_parameters = {'n_neighbors': range(2, 15)}
         self.knn = GridSearchCV(knn(), grid_parameters, cv=3, iid=False)   # least populated class in y has only 3 members, so cv is set to 3
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.knn
+
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
 

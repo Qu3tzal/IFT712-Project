@@ -14,6 +14,10 @@ class RidgeClassifier(models.classifier.Classifier):
         super().__init__("ridge")
         self.ridge = ridge()
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.ridge
+
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
 
