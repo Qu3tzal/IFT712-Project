@@ -27,6 +27,9 @@ class VotingClassifier(models.classifier.Classifier):
         #self.voting = VotingClassifier([('SVM Classifier', svm), ('KNN Classifier', knn), ('Ridge Classifier', ridge), ('Logistic Regression Classifier', logistic_regression), ('Random Forest Classifier', random_forest), ('Multilayer Perceptron Classifier', mlp)],'hard')
         self.voting = sklearn.ensemble.VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Ridge_Classifier', ridge), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='hard')
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.voting
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.

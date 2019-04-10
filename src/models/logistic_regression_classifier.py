@@ -17,6 +17,10 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
         super().__init__("logistic_regression")
         self.logistic_regression = LogisticRegression(random_state=0, solver='lbfgs',multi_class='multinomial',max_iter=1000)
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.logistic_regression
+
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
 
@@ -46,6 +50,3 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
             Returns: the accuracy
         """
         return self.logistic_regression.score(inputs, targets)
-
-
-
