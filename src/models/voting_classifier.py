@@ -18,13 +18,14 @@ class VotingClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("Voting Classifier")
-        svm = models.svm_classifier.SVMClassifier()
-        knn = models.knn_classifier.KNNClassifier()
-        ridge = models.ridge_classifier.RidgeClassifier()
-        logistic_regression = models.logistic_regression_classifier.LogisticRegressionClassifier()
-        random_forest = models.random_forest_classifier.RandomForestClassifier()
-        mlp = models.mlperceptron_classifier.MLPerceptronClassifier()
-        #self.voting = VotingClassifier([('SVM Classifier', svm), ('KNN Classifier', knn), ('Ridge Classifier', ridge), ('Logistic Regression Classifier', logistic_regression), ('Random Forest Classifier', random_forest), ('Multilayer Perceptron Classifier', mlp)],'hard')
+
+        svm = models.svm_classifier.SVMClassifier().get_underlying_classifier()
+        knn = models.knn_classifier.KNNClassifier().get_underlying_classifier()
+        ridge = models.ridge_classifier.RidgeClassifier().get_underlying_classifier()
+        logistic_regression = models.logistic_regression_classifier.LogisticRegressionClassifier().get_underlying_classifier()
+        random_forest = models.random_forest_classifier.RandomForestClassifier().get_underlying_classifier()
+        mlp = models.mlperceptron_classifier.MLPerceptronClassifier().get_underlying_classifier()
+
         self.voting = sklearn.ensemble.VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Ridge_Classifier', ridge), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='hard')
 
     def get_underlying_classifier(self):
