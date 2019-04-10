@@ -5,9 +5,11 @@ import features.preparator as preparator
 import models.classifier
 import models.svm_classifier
 import models.knn_classifier
+import models.ridge_classifier
 import models.logistic_regression_classifier
 import models.mlperceptron_classifier
 import models.random_forest_classifier
+import models.voting_classifier
 
 
 def main():
@@ -18,7 +20,7 @@ def main():
     if len(sys.argv) < 2:
         usage = "\n----------------\n" \
                 "\nUsage: python src training_method\
-                \n\ttraining_method: SVM, KNN, logistic_regression, random_forest, multi_layer_neural_network" \
+                \n\ttraining_method: SVM, KNN, logistic_regression, random_forest, multi_layer_neural_network, bagging" \
                 "\n\n----------------\n\n"
         print(usage)
         return
@@ -72,7 +74,7 @@ def main():
     elif training_method == 'multi_layer_neural_network':
         classifier = models.mlperceptron_classifier.MLPerceptronClassifier()
     elif training_method == 'bagging':
-        raise NotImplementedError()
+        classifier = models.voting_classifier.VotingClassifier()
     else:
         raise RuntimeError("Invalid training method name.")
 

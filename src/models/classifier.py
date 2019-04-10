@@ -15,6 +15,10 @@ class Classifier:
         """
         self.parameters = dict({"name": name})
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        raise NotImplementedError()
+
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
 
