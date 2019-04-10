@@ -28,6 +28,9 @@ class MLPerceptronClassifier(models.classifier.Classifier):
                         iid=False
                     )
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.mlp
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.

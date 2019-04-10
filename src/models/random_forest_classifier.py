@@ -14,6 +14,10 @@ class RandomForestClassifier(models.classifier.Classifier):
         super().__init__("RandomForest")
         self.random_forest = ensemble.RandomForestClassifier(n_estimators=100)
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.random_forest
+
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
 

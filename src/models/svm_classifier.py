@@ -18,6 +18,10 @@ class SVMClassifier(models.classifier.Classifier):
         super().__init__("SVM")
         self.svm = svm.SVC(gamma='auto')
 
+    def get_underlying_classifier(self):
+        """ Returns the underlying classifier object. """
+        return self.svm
+
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
 
