@@ -63,12 +63,16 @@ def main():
         classifier = models.svm_classifier.SVMClassifier()
     elif training_method == 'KNN':
         classifier = models.knn_classifier.KNNClassifier()
+    elif training_method == 'ridge':
+        classifier = models.ridge_classifier.RidgeClassifier()
     elif training_method == 'logistic_regression':
         classifier = models.logistic_regression_classifier.LogisticRegressionClassifier()
     elif training_method == 'random_forest':
         classifier = models.random_forest_classifier.RandomForestClassifier()
     elif training_method == 'multi_layer_neural_network':
         classifier = models.mlperceptron_classifier.MLPerceptronClassifier()
+    elif training_method == 'bagging':
+        raise NotImplementedError()
     else:
         raise RuntimeError("Invalid training method name.")
 
