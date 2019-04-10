@@ -11,7 +11,7 @@ class RidgeClassifier(models.classifier.Classifier):
             Arg:
                 name the name of the classifier
         """
-        super().__init__("SVM")
+        super().__init__("ridge")
         self.ridge = ridge()
 
     def train(self, inputs, targets):
