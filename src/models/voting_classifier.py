@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import models.classifier
-from sklearn.ensemble import VotingClassifier
+import sklearn.ensemble
 import models.svm_classifier
 import models.knn_classifier
 import models.ridge_classifier
@@ -25,7 +25,7 @@ class VotingClassifier(models.classifier.Classifier):
         random_forest = models.random_forest_classifier.RandomForestClassifier()
         mlp = models.mlperceptron_classifier.MLPerceptronClassifier()
         #self.voting = VotingClassifier([('SVM Classifier', svm), ('KNN Classifier', knn), ('Ridge Classifier', ridge), ('Logistic Regression Classifier', logistic_regression), ('Random Forest Classifier', random_forest), ('Multilayer Perceptron Classifier', mlp)],'hard')
-        self.voting = VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Ridge_Classifier', ridge), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='hard')
+        self.voting = sklearn.ensemble.VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Ridge_Classifier', ridge), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='hard')
 
 
     def train(self, inputs, targets):
@@ -35,7 +35,7 @@ class VotingClassifier(models.classifier.Classifier):
                 inputs the inputs
                 targets the targets
         """
-        self.VotingClassifier.fit(inputs, targets)
+        self.voting.fit(inputs, targets)
 
     def predict(self, dataset):
         """ Predicts the dataset.
@@ -45,7 +45,7 @@ class VotingClassifier(models.classifier.Classifier):
 
             Returns: the prediction of all inputs
         """
-        return self.VotingClassifier.predict(dataset)
+        return self.voting.predict(dataset)
 
     def score(self, inputs, targets):
         """ Computes the accuracy on the given dataset.
@@ -56,4 +56,4 @@ class VotingClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.VotingClassifier.score(inputs, targets)
+        return self.voting.score(inputs, targets)
