@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 import models.classifier
-from sklearn import svm
+from sklearn.linear_model import RidgeClassifier as ridge
 
-
-class SVMClassifier(models.classifier.Classifier):
-    """ This class is the abstract version of a classifier.
-        All classifiers in this project should inherit this class to offer a
-        uniform API.
-    """
+class RidgeClassifier(models.classifier.Classifier):
+    """ This class implements the ridge classifier. """
 
     def __init__(self):
         """ Constructor.
@@ -15,12 +11,12 @@ class SVMClassifier(models.classifier.Classifier):
             Arg:
                 name the name of the classifier
         """
-        super().__init__("SVM")
-        self.svm = svm.SVC(gamma='auto')
+        super().__init__("ridge")
+        self.ridge = ridge()
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """
-        return self.svm
+        return self.ridge
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
@@ -29,7 +25,7 @@ class SVMClassifier(models.classifier.Classifier):
                 inputs the inputs
                 targets the targets
         """
-        self.svm.fit(inputs, targets)
+        self.ridge.fit(inputs, targets)
 
     def predict(self, dataset):
         """ Predicts the dataset.
@@ -50,4 +46,4 @@ class SVMClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.svm.score(inputs, targets)
+        return self.ridge.score(inputs, targets)
