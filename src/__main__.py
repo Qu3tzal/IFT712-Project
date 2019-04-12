@@ -2,6 +2,7 @@
 import sys
 import data.bootstrap, data.database
 import features.preparator as preparator
+import visualization.visualize as visualize
 import models.classifier
 import models.svm_classifier
 import models.knn_classifier
@@ -11,13 +12,12 @@ import models.mlperceptron_classifier
 import models.random_forest_classifier
 import models.voting_classifier
 
-
 def main():
 
     """ Main function.
     """
 
-    training_methods = ["ridge", "SVM", "KNN", "logistic_regression", "random_forest", "multi_layer_neural_network", "bagging"]
+    training_methods = ["ridge", "SVM", "KNN", "logistic", "RF", "MLNN", "bagging"]
     methods_chosen = []
     methods_authorized = []
 
@@ -26,13 +26,19 @@ def main():
                 "\nUsage: " \
                 "\n\tpython src training_method" \
                 "\n\tpython src training_method_1 training_method_2 training_method_N" \
-                "\n\n\ttraining_method: all, ridge, SVM, KNN, logistic_regression, random_forest, multi_layer_neural_network, bagging" \
+                "\n\n\ttraining_method: all, KNN, ridge, SVM, logistic, RF, MLNN, bagging" \
+                "\n\nequivalence:" \
+                "\n\tKNN : k-nearest neighbors" \
+                "\n\tridge : ridge regression" \
+                "\n\tSVM : Support-vector machine" \
+                "\n\tlogistic : logistic regression" \
+                "\n\tMLNN : multi-layer neural network" \
+                "\n\tRF : random forest" \
                 "\n\n----------------\n\n"
         print(usage)
         return
     if len(sys.argv) == 2 and sys.argv[1] == "all":
         methods_authorized = training_methods.copy()
-        print(methods_authorized)
     elif len(sys.argv) >= 2 and len(sys.argv) < 8:
         methods_chosen = sys.argv[1:]
         for method in methods_chosen:
@@ -40,10 +46,11 @@ def main():
                 print(method + " is not a valid method")
             else:
                 methods_authorized.append(method)
-                print(method)
     else:
         print("Please enter between 1 and 7 methods.")
         return
+
+    print(methods_authorized)
 
     # Load the database.
     db = data.database.Database('data')
@@ -86,11 +93,11 @@ def main():
             classifiers.append(models.knn_classifier.KNNClassifier())
         elif method == 'ridge':
             classifiers.append(models.ridge_classifier.RidgeClassifier())
-        elif method == 'logistic_regression':
+        elif method == 'logistic':
             classifiers.append(models.logistic_regression_classifier.LogisticRegressionClassifier())
-        elif method == 'random_forest':
+        elif method == 'RF':
             classifiers.append(models.random_forest_classifier.RandomForestClassifier())
-        elif method == 'multi_layer_neural_network':
+        elif method == 'MLNN':
             classifiers.append(models.mlperceptron_classifier.MLPerceptronClassifier())
         elif method == 'bagging':
             classifiers.append(models.voting_classifier.VotingClassifier())
@@ -98,13 +105,18 @@ def main():
             raise RuntimeError("Invalid training method name.")
 
     print("Models training...\n")
+    scores = []
     for clf, method in zip(classifiers, methods_authorized):
         # Train.
         clf.train(training_inputs, training_targets)
 
         # Output the score.
         print(method)
-        print("\t\t" + str(clf.score(test_inputs, test_targets)))
+        scores.append(clf.score(test_inputs, test_targets))
+        print("\t\t" + str(scores[-1]))
+
+    visualizer = visualize.visualizationBuilder()
+    visualizer.barChart(methods_authorized, scores)
 
 if __name__ == "__main__":
     main()
