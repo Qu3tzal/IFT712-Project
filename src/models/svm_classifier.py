@@ -16,7 +16,7 @@ class SVMClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("SVM")
-        self.svm = svm.SVC(gamma='auto')
+        self.svm = svm.SVC(gamma='auto', probability=True)
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """
