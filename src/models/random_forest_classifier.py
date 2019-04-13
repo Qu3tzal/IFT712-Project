@@ -2,6 +2,8 @@
 import models.classifier
 from sklearn import ensemble
 from sklearn import metrics
+from sklearn.model_selection import GridSearchCV
+
 
 class RandomForestClassifier(models.classifier.Classifier):
     """ This class implements a random forest classifier. """
@@ -13,7 +15,7 @@ class RandomForestClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("RandomForest")
-        self.random_forest = ensemble.RandomForestClassifier(n_estimators=100)
+        self.random_forest = GridSearchCV(ensemble.RandomForestClassifier(n_estimators=100), param_grid={'n_estimators': [45, 99, 100, 99 * 2, 200]}, cv=3, iid=False)
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """

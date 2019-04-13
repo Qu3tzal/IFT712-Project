@@ -2,6 +2,7 @@
 import models.classifier
 from sklearn.linear_model import LogisticRegression
 from sklearn import metrics
+from sklearn.model_selection import GridSearchCV
 
 class LogisticRegressionClassifier(models.classifier.Classifier):
     """ This class is the abstract version of a classifier.
@@ -16,7 +17,7 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("logistic_regression")
-        self.logistic_regression = LogisticRegression(random_state=0, solver='lbfgs',multi_class='multinomial',max_iter=1000)
+        self.logistic_regression = GridSearchCV(LogisticRegression(solver='lbfgs',multi_class='multinomial',max_iter=1000), param_grid={'C': [0.0001, 0.001, 0.01, 0.1, 1, 5]}, cv=3, iid=False)
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """

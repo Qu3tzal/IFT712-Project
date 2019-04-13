@@ -2,6 +2,7 @@
 import models.classifier
 from sklearn import metrics
 from sklearn import svm
+from sklearn.model_selection import GridSearchCV
 
 
 class SVMClassifier(models.classifier.Classifier):
@@ -17,7 +18,7 @@ class SVMClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("SVM")
-        self.svm = svm.SVC(gamma='auto', probability=True)
+        self.svm = GridSearchCV(svm.SVC(probability=True), param_grid={'C': [0.0001, 0.001, 0.01, 0.1, 1, 5], 'gamma': [0.0001, 0.001, 0.01, 0.1, 1]}, cv=3, iid=False)
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """
