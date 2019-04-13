@@ -3,10 +3,7 @@ import models.classifier
 from sklearn.linear_model import LogisticRegression
 
 class LogisticRegressionClassifier(models.classifier.Classifier):
-    """ This class is the abstract version of a classifier.
-       All classifiers in this project should inherit this class to offer a
-       uniform API.
-    """
+    """ This class implements a logistic regression classifier. """
 
     def __init__(self):
         """ Constructor.
