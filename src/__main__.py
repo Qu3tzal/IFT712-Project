@@ -10,7 +10,42 @@ import models.logistic_regression_classifier
 import models.mlperceptron_classifier
 import models.random_forest_classifier
 import models.voting_classifier
+import pipeline.kaggle_pipeline
 
+def main_kaggle(training_method):
+    classifier = None
+    if training_method == 'SVM':
+        classifier = models.svm_classifier.SVMClassifier()
+    elif training_method == 'KNN':
+        classifier = models.knn_classifier.KNNClassifier()
+    elif training_method == 'ridge':
+        classifier = models.ridge_classifier.RidgeClassifier()
+    elif training_method == 'logistic_regression':
+        classifier = models.logistic_regression_classifier.LogisticRegressionClassifier()
+    elif training_method == 'random_forest':
+        classifier = models.random_forest_classifier.RandomForestClassifier()
+    elif training_method == 'multi_layer_neural_network':
+        classifier = models.mlperceptron_classifier.MLPerceptronClassifier()
+    elif training_method == 'bagging':
+        classifier = models.voting_classifier.VotingClassifier()
+    else:
+        raise RuntimeError("Invalid training method name.")
+
+    # Load the database.
+    print("Loading database...")
+    db = data.database.Database('data')
+    db.load()
+    print("\tDatabase loaded.")
+
+    # Create the pipeline.
+    kp = pipeline.kaggle_pipeline.KagglePipeline(
+                    classifier,
+                    db.get_train_dataset().drop('id', axis=1),
+                    db.get_test_dataset()
+                )
+    print("Training, predicting and writing file...")
+    kp.predict("submission.csv")
+    print("\tDone.")
 
 def main():
 
@@ -26,6 +61,11 @@ def main():
         return
 
     training_method = sys.argv[1]
+
+    if training_method == "kaggle":
+            main_kaggle(sys.argv[2])
+            return 0
+
     print("Training method: " + training_method)
 
     # Load the database.
