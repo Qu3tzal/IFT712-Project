@@ -4,10 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier as knn
 from sklearn.model_selection import GridSearchCV
 
 class KNNClassifier(models.classifier.Classifier):
-    """ This class is the abstract version of a classifier.
-        All classifiers in this project should inherit this class to offer a
-        uniform API.
-    """
+    """ This class implements the k-nearest neighbors classifier. """
 
     def __init__(self):
         """ Constructor.
@@ -18,10 +15,6 @@ class KNNClassifier(models.classifier.Classifier):
         super().__init__("KNN")
         grid_parameters = {'n_neighbors': range(2, 15)}
         self.knn = GridSearchCV(knn(), grid_parameters, cv=3, iid=False)   # least populated class in y has only 3 members, so cv is set to 3
-
-    def get_underlying_classifier(self):
-        """ Returns the underlying classifier object. """
-        return self.knn
 
     def train(self, inputs, targets):
         """ Trains the model on the given dataset.
@@ -41,16 +34,6 @@ class KNNClassifier(models.classifier.Classifier):
             Returns: the prediction of all inputs
         """
         return self.knn.predict(dataset)
-
-    def predict_proba(self, dataset):
-        """ Predicts the probabilities of each class for the dataset inputs.
-
-            Arg:
-                dataset the inputs to predict
-
-            Returns: the probabilities of all inputs
-        """
-        return self.knn.predict_proba(dataset)
 
     def score(self, inputs, targets):
         """ Computes the accuracy on the given dataset.
