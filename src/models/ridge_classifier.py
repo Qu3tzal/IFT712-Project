@@ -35,7 +35,17 @@ class RidgeClassifier(models.classifier.Classifier):
 
             Returns: the prediction of all inputs
         """
-        return self.svm.predict(dataset)
+        return self.ridge.predict(dataset)
+
+    def predict_proba(self, dataset):
+        """ Predicts the probabilities of each class for the dataset inputs.
+
+            Arg:
+                dataset the inputs to predict
+
+            Returns: the probabilities of all inputs
+        """
+        return self.ridge.predict_proba(dataset)
 
     def score(self, inputs, targets):
         """ Computes the accuracy on the given dataset.
