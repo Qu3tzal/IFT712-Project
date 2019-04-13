@@ -2,6 +2,7 @@
 import models.classifier
 from sklearn.neighbors import KNeighborsClassifier as knn
 from sklearn.model_selection import GridSearchCV
+from sklearn import metrics
 
 class KNNClassifier(models.classifier.Classifier):
     """ This class is the abstract version of a classifier.
@@ -61,7 +62,7 @@ class KNNClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.knn.score(inputs, targets)
+        return self.knn.score(inputs, targets), metrics.log_loss(targets, self.predict_proba(inputs), labels=[str(x) for x in range(0,99)])
 
     def bestparams(self):
         """ Computes the accuracy on the given dataset.

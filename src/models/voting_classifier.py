@@ -7,6 +7,7 @@ import models.ridge_classifier
 import models.logistic_regression_classifier
 import models.mlperceptron_classifier
 import models.random_forest_classifier
+from sklearn import metrics
 
 class VotingClassifier(models.classifier.Classifier):
     """ This class implements a bagging classifier using all classifiers implemented so far. """
@@ -21,12 +22,13 @@ class VotingClassifier(models.classifier.Classifier):
 
         svm = models.svm_classifier.SVMClassifier().get_underlying_classifier()
         knn = models.knn_classifier.KNNClassifier().get_underlying_classifier()
-        ridge = models.ridge_classifier.RidgeClassifier().get_underlying_classifier()
+        #ridge = models.ridge_classifier.RidgeClassifier().get_underlying_classifier()
         logistic_regression = models.logistic_regression_classifier.LogisticRegressionClassifier().get_underlying_classifier()
         random_forest = models.random_forest_classifier.RandomForestClassifier().get_underlying_classifier()
         mlp = models.mlperceptron_classifier.MLPerceptronClassifier().get_underlying_classifier()
 
-        self.voting = sklearn.ensemble.VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Ridge_Classifier', ridge), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='hard')
+        #self.voting = sklearn.ensemble.VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Ridge_Classifier', ridge), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='soft')
+        self.voting = sklearn.ensemble.VotingClassifier(estimators=[('SVM_Classifier', svm), ('KNN_Classifier', knn), ('Logistic_Regression_Classifier', logistic_regression), ('Random_Forest_Classifier', random_forest), ('Multilayer_Perceptron_Classifier', mlp)], voting='soft')
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """
@@ -70,4 +72,4 @@ class VotingClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.voting.score(inputs, targets)
+        return self.voting.score(inputs, targets), metrics.log_loss(targets, self.predict_proba(inputs), labels=[str(x) for x in range(0,99)])

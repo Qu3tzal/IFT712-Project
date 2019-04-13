@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import models.classifier
+from sklearn import metrics
 from sklearn import svm
 
 
@@ -16,7 +17,7 @@ class SVMClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("SVM")
-        self.svm = svm.SVC(gamma='auto')
+        self.svm = svm.SVC(gamma='auto', probability=True)
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """
@@ -60,4 +61,5 @@ class SVMClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.svm.score(inputs, targets)
+
+        return self.svm.score(inputs, targets), metrics.log_loss(targets, self.predict_proba(inputs), labels=[str(x) for x in range(0,99)])

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import models.classifier
 from sklearn import ensemble
+from sklearn import metrics
 
 class RandomForestClassifier(models.classifier.Classifier):
     """ This class implements a random forest classifier. """
@@ -56,4 +57,4 @@ class RandomForestClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.random_forest.score(inputs, targets)
+        return self.random_forest.score(inputs, targets), metrics.log_loss(targets, self.predict_proba(inputs), labels=[str(x) for x in range(0,99)])

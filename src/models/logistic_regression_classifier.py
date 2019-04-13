@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import models.classifier
 from sklearn.linear_model import LogisticRegression
+from sklearn import metrics
 
 class LogisticRegressionClassifier(models.classifier.Classifier):
     """ This class is the abstract version of a classifier.
@@ -59,4 +60,4 @@ class LogisticRegressionClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.logistic_regression.score(inputs, targets)
+        return self.logistic_regression.score(inputs, targets), metrics.log_loss(targets, self.predict_proba(inputs), labels=[str(x) for x in range(0,99)])

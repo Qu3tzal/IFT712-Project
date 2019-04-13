@@ -3,6 +3,7 @@ import models.classifier
 import numpy as np
 from sklearn.neural_network import MLPClassifier
 from sklearn.model_selection import GridSearchCV
+from sklearn import metrics
 
 
 class MLPerceptronClassifier(models.classifier.Classifier):
@@ -70,4 +71,4 @@ class MLPerceptronClassifier(models.classifier.Classifier):
 
             Returns: the accuracy
         """
-        return self.mlp.score(inputs, targets)
+        return self.mlp.score(inputs, targets), metrics.log_loss(targets, self.predict_proba(inputs), labels=[str(x) for x in range(0,99)])
