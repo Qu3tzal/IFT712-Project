@@ -16,7 +16,7 @@ class SVMClassifier(models.classifier.Classifier):
                 name the name of the classifier
         """
         super().__init__("SVM")
-        self.svm = svm.SVC(gamma='auto')
+        self.svm = svm.SVC(gamma='auto', probability=True)
 
     def get_underlying_classifier(self):
         """ Returns the underlying classifier object. """
@@ -40,6 +40,16 @@ class SVMClassifier(models.classifier.Classifier):
             Returns: the prediction of all inputs
         """
         return self.svm.predict(dataset)
+
+    def predict_proba(self, dataset):
+        """ Predicts the probabilities of each class for the dataset inputs.
+
+            Arg:
+                dataset the inputs to predict
+
+            Returns: the probabilities of all inputs
+        """
+        return self.svm.predict_proba(dataset)
 
     def score(self, inputs, targets):
         """ Computes the accuracy on the given dataset.

@@ -38,6 +38,16 @@ class Classifier:
         """
         raise NotImplementedError()
 
+    def predict_proba(self, dataset):
+        """ Predicts the probabilities of each class for the dataset inputs.
+
+            Arg:
+                dataset the inputs to predict
+
+            Returns: the probabilities of all inputs
+        """
+        raise NotImplementedError()
+
     def score(self, inputs, targets):
         """ Computes the accuracy and loss on the given dataset.
 
