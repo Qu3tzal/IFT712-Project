@@ -4,10 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier as knn
 from sklearn.model_selection import GridSearchCV
 
 class KNNClassifier(models.classifier.Classifier):
-    """ This class is the abstract version of a classifier.
-        All classifiers in this project should inherit this class to offer a
-        uniform API.
-    """
+    """ This class implement a k-nearest neighbors classifier. """
 
     def __init__(self):
         """ Constructor.

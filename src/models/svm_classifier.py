@@ -4,10 +4,7 @@ from sklearn import svm
 
 
 class SVMClassifier(models.classifier.Classifier):
-    """ This class is the abstract version of a classifier.
-        All classifiers in this project should inherit this class to offer a
-        uniform API.
-    """
+    """ This class implements a SVM classifier. """
 
     def __init__(self):
         """ Constructor.
